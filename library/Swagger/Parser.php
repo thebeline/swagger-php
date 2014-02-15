@@ -40,6 +40,17 @@ class Parser
 {
 
     /**
+     * The metadata about the API
+     * @var Annotations\Info
+     */
+    protected $info = null;
+
+    /**
+     * The authentication config
+     * @var Annotations\Authorizations
+     */
+    protected $authorizations = null;
+    /**
      * All detected resources
      * @var Resource[]
      */
@@ -195,6 +206,43 @@ class Parser
     public function setPartial($key, $annotation)
     {
         $this->partials[$key] = $annotation;
+    }
+
+    /**
+     * @return Annotations\Info
+     */
+    public function getInfo()
+    {
+        return $this->info;
+    }
+
+    /**
+     * @param Annotations\Info $info
+     */
+    public function setInfo($info)
+    {
+        if ($this->info !== null) {
+            Logger::notice('Overwriting info with "'.$info->identity().'" found in '.AbstractAnnotation::$context);
+        }
+        $this->info = $info;
+    }
+
+    /**
+     * @return Annotations\Authorizations
+     */
+    public function getAuthorizations() {
+        return $this->authorizations;
+
+    }
+
+    /**
+     * @param Annotations\Authorizations $authorizations
+     */
+    public function setAuthorizations($authorizations) {
+        if ($this->authorizations !== null) {
+            Logger::notice('Overwriting authorizations with "'.$authorizations->identity().'" found in '.AbstractAnnotation::$context);
+        }
+        $this->authorizations = $authorizations;
     }
 
     /**

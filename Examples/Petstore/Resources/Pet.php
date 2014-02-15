@@ -34,7 +34,11 @@ use Swagger\Annotations as SWG;
  *   basePath="http://petstore.swagger.wordnik.com/api",
  *   resourcePath="/pet",
  *   description="Operations about pets",
- *   produces="['application/json','application/xml','text/plain','text/html']"
+ *   produces="['application/json','application/xml','text/plain','text/html']",
+ *   @SWG\Authorizations(oauth2={
+ *     {"scope": "write:pets", "description": "modify pets in your account"},
+ *     {"scope": "read:pets", "description": "read your pets"}
+ *   })
  * )
  */
 class Pet
@@ -64,6 +68,31 @@ class Pet
      * )
      */
     public function getPetById() {
+
+    }
+
+    /**
+     * @SWG\Api(
+     *   path="/pet/{petId}",
+     *   @SWG\Operation(
+     *     method="DELETE",
+     *     summary="Deletes a pet",
+     *     type="void",
+     *     @SWG\Parameter(
+     *       name="petId",
+     *       description="Pet id to delete",
+     *       required=true,
+     *       type="string",
+     *       paramType="path"
+     *     ),
+     *     @SWG\Authorizations(oauth2={
+     *       { "scope": "write:pets", "description": "modify pets in your account" }
+     *     }),
+     *     @SWG\ResponseMessage(code=400, message="Invalid pet value")
+     *   )
+     * )
+     */
+    public function deletePet() {
 
     }
 

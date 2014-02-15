@@ -30,6 +30,16 @@ use Swagger\Processors\ProcessorInterface;
 class Swagger
 {
     /**
+     * @var array|Annotations\Info
+     */
+    public $info;
+
+    /**
+     * @var array|Annotations\Authorizations
+     */
+    public $authorizations;
+
+    /**
      * @var Resource[]
      */
     public $registry = array();
@@ -124,6 +134,12 @@ class Swagger
         }
         if ($result['basePath'] === null) {
             unset($result['basePath']);
+        }
+        if ($this->info !== null) {
+            $result['info'] = $this->info;
+        }
+        if ($this->authorizations !== null) {
+            $result['authorizations'] = $this->authorizations;
         }
         switch ($options['output']) {
             case 'array':
@@ -235,6 +251,20 @@ class Swagger
      */
     protected function processParser($parser)
     {
+        $info = $parser->getInfo();
+        if ($info) {
+            if ($this->info !== null) {
+                Logger::notice('Overwriting info with "'.$info->identity().'"');
+            }
+            $this->info = $info;
+        }
+        $authorizations = $parser->getAuthorizations();
+        if ($authorizations) {
+            if ($this->authorizations !== null) {
+                Logger::notice('Overwriting authorization with "'.$authorizations->identity().'"');
+            }
+            $this->authorizations = $authorizations;
+        }
         foreach ($parser->getResources() as $resource) {
             if (array_key_exists($resource->resourcePath, $this->registry)) {
                 $this->registry[$resource->resourcePath]->merge($resource);
@@ -683,6 +713,8 @@ class Swagger
             new Processors\PartialProcessor(),
             new Processors\PropertyProcessor(),
             new Processors\ResourceProcessor(),
+            new Processors\InfoProcessor(),
+            new Processors\AuthorizationsProcessor(),
         );
     }
 

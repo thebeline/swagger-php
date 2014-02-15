@@ -82,10 +82,16 @@ class Resource extends AbstractAnnotation
      */
     public $description;
 
+    /**
+     * @var Authorizations
+     */
+    public $authorizations;
+
     protected static $mapAnnotations = array(
         '\Swagger\Annotations\Api' => 'apis[]',
         '\Swagger\Annotations\Produces' => 'produces[]',
         '\Swagger\Annotations\Consumes' => 'consumes[]',
+        '\Swagger\Annotations\Authorizations' => 'authorizations',
     );
 
     public function validate()
