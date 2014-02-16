@@ -23,7 +23,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "doctrine/annotations": "*"
+        "doctrine/annotations": "dev-master"
     },
     "require-dev": {
         "symfony/finder": "*",
